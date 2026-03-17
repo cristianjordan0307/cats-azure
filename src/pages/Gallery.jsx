@@ -1,4 +1,4 @@
-import "../styles/styles/gallery.css"
+import "../styles/gallery.css"
 import CatCard from "../components/catCard.jsx";
 import CatDetails from "../components/catDetail.jsx";
 import {useCats} from "../hooks/useCats.js";
@@ -17,7 +17,7 @@ export default function Gallery() {
         closeCat,
         registerError,
         getImageUrl,
-        getVideoURL,
+        getVideoUrl,
         getPdfUrl,
     } = useCats();
 
@@ -71,7 +71,7 @@ export default function Gallery() {
                 <CatDetails
                     cat={selected}
                     imageUrl={getImageUrl(selected.file)}
-                    videoUrl={getVideoURL(selected.name)}
+                    videoUrl={getVideoUrl(selected.name)}
                     pdfUrl={getPdfUrl(selected.name)}
                     hasError={!!errors[selected.name]}
                     onClose={closeCat}

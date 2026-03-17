@@ -3,85 +3,98 @@
  * Componente de detalle: muestra el modal con imagen ampliada,
  * reproductor de video y enlace al PDF de ficha técnica.
  * Principio SOLID — S: Single Responsibility
-*/
+ *
+ * Props:
+ *  @prop {object}   cat        - Objeto raza seleccionada { file, name, desc }
+ *  @prop {string}   imageUrl   - URL de la imagen en Blob Storage
+ *  @prop {string}   videoUrl   - URL del video en Blob Storage
+ *  @prop {string}   pdfUrl     - URL del PDF de ficha técnica en Blob Storage
+ *  @prop {boolean}  hasError   - Si la imagen falló al cargar
+ *  @prop {Function} onClose    - Callback para cerrar el modal
+ */
+export default function CatDetail({
+  cat,
+  imageUrl,
+  videoUrl,
+  pdfUrl,
+  hasError,
+  onClose,
+}) {
+  return (
+    /* Clic en el backdrop (fuera del modal) cierra el modal */
+    <div className="modal-backdrop" onClick={onClose}>
 
-export default function catDetail({cat,imageUrl, videoUrl, pdfUrl, hasError,onClose })
-{
+      {/* stopPropagation evita que el clic dentro cierre el modal */}
+      <div className="modal" onClick={(e) => e.stopPropagation()}>
 
-    return (
-        /* Clic en el backdrop (fuera del modal) cierra el modal */
-        <div className="modal-backdrop" onClick={onClose}>
-            {/* stopPropagation evita que el clic dentro cierre el modal */}
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
+        {/* ── Imagen ampliada ── */}
+        {hasError ? (
+          <div
+            style={{
+              height: 360,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 80,
+            }}
+          >
+            🐱
+          </div>
+        ) : (
+          <img src={imageUrl} alt={cat.name} />
+        )}
 
-                {/* ── Imagen ampliada ── */}
-                {hasError ? (
-                    <div
-                        style={{
-                            height: 360,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: 80,
-                        }}
-                    >
-                        🐱
-                    </div>
-                ) : (
-                    <img src={imageUrl} alt={cat.name} />
-                )}
+        {/* ── Cuerpo del modal ── */}
+        <div className="modal-body">
+          <div className="modal-name">{cat.name}</div>
+          <div className="modal-desc">{cat.desc}</div>
 
-{/* ── Cuerpo del modal ── */}
-                <div>
-                    <div className="modal-name">{cat.name}</div>
-                    <div className="modal-desc">{cat.desc}</div>
-                    {/* URL de la imagen */}
-                    <div className="modal-url">{imageUrl}</div>
+          {/* URL de la imagen */}
+          <div className="modal-url">{imageUrl}</div>
 
-                    {/* ── Video desde Blob Storage ── */}
-                    <video
-                        controls
-                        style={{
-                            width: "100%",
-                            borderRadius: 10,
-                            marginBottom: 14,
-                            background: "#0f0a06",
-                        }}
-                    >
-                        <source src={videoUrl} type="video/mp4" />
-                        Tu navegador no soporta video HTML5.
-                    </video>
+          {/* ── Video desde Blob Storage ── */}
+          <video
+            controls
+            style={{
+              width: "100%",
+              borderRadius: 10,
+              marginBottom: 14,
+              background: "#0f0a06",
+            }}
+          >
+            <source src={videoUrl} type="video/mp4" />
+            Tu navegador no soporta video HTML5.
+          </video>
 
-                    {/* ── Enlace al PDF de ficha técnica ── */}
-                    <a
-                        href={pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                            display: "block",
-                            background: "#0f0a06",
-                            border: "1px solid #2a1f12",
-                            borderRadius: 8,
-                            padding: "10px 14px",
-                            fontFamily: "monospace",
-                            fontSize: 11,
-                            color: "#c8702a",
-                            wordBreak: "break-all",
-                            marginBottom: 16,
-                            textDecoration: "none",
-                        }}
-                    >
-                        📄 Ficha técnica PDF → {pdfUrl}
-                    </a>
-                    {/* ── Botón cerrar ── */}
+          {/* ── Enlace al PDF de ficha técnica ── */}
+          <a
+            href={pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "block",
+              background: "#0f0a06",
+              border: "1px solid #2a1f12",
+              borderRadius: 8,
+              padding: "10px 14px",
+              fontFamily: "monospace",
+              fontSize: 11,
+              color: "#c8702a",
+              wordBreak: "break-all",
+              marginBottom: 16,
+              textDecoration: "none",
+            }}
+          >
+            📄 Ficha técnica PDF → {pdfUrl}
+          </a>
+
+          {/* ── Botón cerrar ── */}
           <button className="modal-close" onClick={onClose}>
             Cerrar
           </button>
-                </div>
-                    
-                    
-            </div>
         </div>
-    );
-}
 
+      </div>
+    </div>
+  );
+}
